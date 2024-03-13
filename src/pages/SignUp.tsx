@@ -1,11 +1,8 @@
 import { useForm } from "react-hook-form";
-import { postUser, getUser } from "../api";
-import { useEffect } from "react";
+import { postUser } from "../api";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const TOKEN =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA0MjI5ODIsImlhdCI6MTcxMDMzNjU4Miwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiM2U5Zjg3N2ItMWFlOS00OTAyLTg0ZWEtYjAxNDY2ZGVjMDdlIn0.YTrqajUeobh6vM3GbZ4D8cbBq90lXT2bZnNuyFOPSys";
   const {
     register,
     handleSubmit,
@@ -28,21 +25,13 @@ const SignUp = () => {
   };
 
   const fetchData = async (data: DataObject) => {
-    console.log(data);
     const res = await postUser(data);
     console.log(res);
   };
 
-  useEffect(() => {
-    (async () => {
-      const userData = await getUser(TOKEN);
-      console.log(userData);
-    })();
-  }, []);
-
   return (
     <>
-      <h2>signup</h2>
+      <h2>新規ユーザー登録</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="signupInner">
           <div className="signupForm">
@@ -109,7 +98,7 @@ const SignUp = () => {
         </div>
         <input type="submit" />
       </form>
-      <Link to="/login">ログインページ</Link>
+      <Link to="/login">ログインページへ</Link>
     </>
   );
 };

@@ -29,3 +29,13 @@ export const getUser = (token: string) => {
     },
   });
 };
+
+export const signinUser = (user: object) => {
+  return request("/signin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+};
