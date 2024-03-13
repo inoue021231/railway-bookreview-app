@@ -1,5 +1,11 @@
+import { Link } from "react-router-dom";
+
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <>
+      <Link to="/signup">ユーザー作成ページ</Link>
+    </>
+  );
 };
 
 export default Login;
