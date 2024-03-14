@@ -32,7 +32,7 @@ const Login = () => {
       <h2>ログイン</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="signupInner">
-          <div className="signupForm">
+          <div className="signupForm" id="emailForm">
             <label htmlFor="email">メールアドレス</label>
             <input
               {...register("email", {
@@ -47,7 +47,7 @@ const Login = () => {
               {errors.email && "正しいメールアドレスを入力してください"}
             </p>
           </div>
-          <div className="signupForm">
+          <div className="signupForm" id="passwordForm">
             <label htmlFor="password">パスワード</label>
             <input
               {...register("password", {
@@ -64,7 +64,7 @@ const Login = () => {
             </p>
           </div>
         </div>
-        <input type="submit" />
+        <input className="submit" type="submit" />
       </form>
       <Link to="/signup">新規ユーザー登録ページへ</Link>
     </>
