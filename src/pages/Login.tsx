@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div>
       <h2>ログイン</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="signupInner">
@@ -64,10 +64,10 @@ const Login = () => {
             </p>
           </div>
         </div>
-        <input className="submit" type="submit" />
+        <input className="submit" type="submit" value="ログイン" />
       </form>
       <Link to="/signup">新規ユーザー登録ページへ</Link>
-    </>
+    </div>
   );
 };
 

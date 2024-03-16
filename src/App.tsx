@@ -1,13 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
-import RouteConfig from './components/RouteConfig';
+import RouteConfig from "./components/RouteConfig";
 
 function App() {
-  return <>
-  <RouteConfig />
-  </>;
+  return (
+    <>
+      <RouteConfig />
+    </>
+  );
 }
 
 export default App;
