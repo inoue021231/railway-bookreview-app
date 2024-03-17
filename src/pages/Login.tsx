@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { signinUser } from "../api";
+import { useState } from "react";
 
 const Login = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -23,13 +25,20 @@ const Login = () => {
   };
 
   const fetchData = async (data: DataObject) => {
-    const token = await signinUser(data);
-    console.log(token);
+    const newData = await signinUser(data);
+    if (newData.hasOwnProperty("ErrorMessageJP")) {
+      setErrorMessage(newData["ErrorMessageJP"]);
+    } else {
+      setErrorMessage("");
+    }
+    console.log(newData);
   };
 
   return (
     <div>
       <h2>ログイン</h2>
+      <div style={{ color: "red" }}>{errorMessage !== "" && errorMessage}</div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="signupInner">
           <div className="signupForm" id="emailForm">

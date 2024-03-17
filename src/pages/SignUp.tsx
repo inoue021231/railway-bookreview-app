@@ -2,8 +2,10 @@ import { useForm } from "react-hook-form";
 import { postIcon, postUser } from "../api";
 import { Link } from "react-router-dom";
 import Compressor from "compressorjs";
+import { useState } from "react";
 
 const SignUp = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -42,15 +44,27 @@ const SignUp = () => {
   };
 
   const fetchData = async (data: DataObject, file: File) => {
-    const newToken = await postUser(data);
-    console.log(newToken);
-    const icon = await postIcon(newToken.token, file);
+    const newData = await postUser(data);
+    console.log(newData);
+    if (newData.hasOwnProperty("ErrorMessageJP")) {
+      setErrorMessage(newData["ErrorMessageJP"]);
+    }
+    const icon = await postIcon(newData.token, file);
     console.log(icon);
+    if (
+      !newData.hasOwnProperty("ErrorMessageJP") &&
+      icon.hasOwnProperty("ErrorMessageJP")
+    ) {
+      setErrorMessage(icon["ErrorMessageJP"]);
+    } else {
+      setErrorMessage("");
+    }
   };
 
   return (
     <>
       <h2>新規ユーザー登録</h2>
+      <div style={{ color: "red" }}>{errorMessage !== "" && errorMessage}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="signupInner">
           <div className="signupForm">
@@ -131,7 +145,7 @@ const SignUp = () => {
             </p>
           </div>
         </div>
-        <input type="submit" />
+        <input type="submit" value="登録" />
       </form>
       <Link to="/login">ログインページへ</Link>
     </>
