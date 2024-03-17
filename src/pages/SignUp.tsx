@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
-import { postUser } from "../api";
+import { postIcon, postUser } from "../api";
 import { Link } from "react-router-dom";
+import Compressor from "compressorjs";
 
 const SignUp = () => {
   const {
@@ -21,12 +22,30 @@ const SignUp = () => {
       email: event.email,
       password: event.password,
     };
-    fetchData(data);
+
+    const file = event.file[0];
+
+    const img = new Compressor(file, {
+      quality: 0.6,
+      maxWidth: 1000,
+      maxHeight: 400,
+      success(result) {
+        const compressedFile = new File([result], file.name, {
+          type: result.type,
+        });
+        fetchData(data, compressedFile);
+      },
+      error(err) {
+        console.error("Compression error:", err);
+      },
+    });
   };
 
-  const fetchData = async (data: DataObject) => {
-    const res = await postUser(data);
-    console.log(res);
+  const fetchData = async (data: DataObject, file: File) => {
+    const newToken = await postUser(data);
+    console.log(newToken);
+    const icon = await postIcon(newToken.token, file);
+    console.log(icon);
   };
 
   return (
@@ -79,6 +98,7 @@ const SignUp = () => {
               {errors.password && "正しいパスワードを入力してください"}
             </p>
           </div>
+
           <div className="signupForm">
             <label htmlFor="confirmPassword">パスワード確認</label>
             <input
@@ -93,6 +113,21 @@ const SignUp = () => {
             />
             <p className="errorText">
               {errors.confirmPassword && "パスワードが一致しません"}
+            </p>
+          </div>
+          <div className="signupForm">
+            <label htmlFor="icon">ユーザーアイコン</label>
+            <input
+              {...register("file", {
+                required: "ファイルを選択してください",
+              })}
+              type="file"
+              id="icon"
+              accept="image/jpeg, image/png"
+              className="formArea"
+            />
+            <p className="errorText">
+              {errors.file && "ファイルが選択されていません"}
             </p>
           </div>
         </div>

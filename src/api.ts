@@ -43,3 +43,16 @@ export const getBookList = (token: string, index: number) => {
     },
   });
 };
+
+export const postIcon = (token: string, file: File) => {
+  const formData = new FormData();
+  formData.append("icon", file);
+
+  return request("/uploads", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    body: formData,
+  });
+};
