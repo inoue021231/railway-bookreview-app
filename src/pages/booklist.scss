@@ -1,0 +1,27 @@
+.review-block {
+  color: #5d627b;
+  background: white;
+  border-top: solid 5px #5d627b;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+  width: 80%;
+  &__title {
+    font-size: 30px;
+  }
+  &__detail {
+    font-size: 10px;
+  }
+  &__url {
+    font-size: medium;
+  }
+  &__reviewer {
+    font-size: medium;
+  }
+  &__review {
+    font-size: medium;
+  }
+}
+
+.review-container {
+  padding: 0.5em 1em;
+  margin: 2em 0;
+}
