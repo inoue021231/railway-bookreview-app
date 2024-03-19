@@ -12,6 +12,7 @@ import {
 } from "../redux/listSlice";
 import Pagination from "../components/ListPagination";
 import Header from "../components/Header";
+import { Link } from "react-router-dom";
 
 const BookList = () => {
   const REVIEW_COUNT = 100;
@@ -27,33 +28,13 @@ const BookList = () => {
 
   const list: List[] = useSelector((state: RootState) => state.list.list);
   const page = useSelector((state: RootState) => state.list.page);
-  const user = useSelector((state: RootState) => state.list.user);
-  const loginStatus = useSelector((state: RootState) => state.list.loginStatus);
-  const token = useSelector((state: RootState) => state.list.token);
   const dispatch = useDispatch();
-
-  console.log(page);
-  console.log(user);
-  console.log(loginStatus);
-  console.log(token);
 
   // localStorage.clear();
 
   const extractedList = list.slice((page - 1) * 10, page * 10);
 
   useEffect(() => {
-    /* (async () => {
-      let index = 0;
-      while (index < REVIEW_COUNT) {
-        const data = await getBookList(TOKEN, index);
-        if (data.length === 0) {
-          break;
-        }
-        index += 10;
-        dispatch(addList(data));
-      }
-    })(); */
-
     const token = localStorage.getItem("authToken");
     (async () => {
       if (token) {
@@ -98,15 +79,17 @@ const BookList = () => {
   return (
     <div>
       <Header />
+      <Link to="/new">レビュー登録</Link>
       {extractedList.length !== 0 &&
         extractedList.map((book) => {
           return (
             <div className="review-container" key={book.id}>
               <div className="review-block">
                 <div className="review-block__title">{book.title}</div>
+                <div className="review-block__reviewer">{book.reviewer}</div>
                 {/* <div className="review-block__detail">{book.detail}</div>
               <div className="review-block__url">{book.url}</div>
-              <div className="review-block__reviewer">{book.reviewer}</div>
+              
               <div className="review-block__reivew">{book.review}</div> */}
               </div>
             </div>

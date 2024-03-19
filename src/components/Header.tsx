@@ -13,39 +13,35 @@ const Header = () => {
     dispatch(resetListSlice());
   };
   return (
-    <header className="site-header">
-      <div className="wrapper site-header__wrapper">
-        <h1>書籍レビューアプリ</h1>
-        {loginStatus ? (
-          <div>
-            <ul className="nav__wrapper">
-              <li className="nav__item">
-                <img src={user.icon} alt="icon" style={{ width: "30px" }}></img>
-              </li>
-              <li className="nav__item">{user.name}</li>
-              <li className="nav__item">
-                <Link to="/profile">登録情報編集</Link>
-              </li>
-              <li className="nav__item">
-                <Link to="/login" onClick={() => handleLogoutClick()}>
-                  ログアウト
-                </Link>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <nav className="nav">
-            <ul className="nav__wrapper">
-              <li className="nav__item">
-                <Link to="/login">ログイン</Link>
-              </li>
-              <li className="nav__item">
-                <Link to="/signup">サインアップ</Link>
-              </li>
-            </ul>
-          </nav>
-        )}
-      </div>
+    <header className="header-section">
+      <h1>書籍レビューアプリ</h1>
+      {loginStatus ? (
+        <div>
+          <ul className="header-section__nav-wrapper">
+            <li className="header-section__nav-wrapper--item">
+              <img src={user.icon} alt="icon" style={{ width: "30px" }}></img>
+            </li>
+            <li className="header-section__nav-wrapper--item">{user.name}</li>
+            <li className="header-section__nav-wrapper--item">
+              <Link to="/profile">登録情報編集</Link>
+            </li>
+            <li className="header-section__nav-wrapper--item">
+              <Link to="/login" onClick={() => handleLogoutClick()}>
+                ログアウト
+              </Link>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <ul className="header-section__nav-wrapper">
+          <li className="header-section__nav-wrapper--item">
+            <Link to="/login">ログイン</Link>
+          </li>
+          <li className="header-section__nav-wrapper--item">
+            <Link to="/signup">サインアップ</Link>
+          </li>
+        </ul>
+      )}
     </header>
   );
 };
