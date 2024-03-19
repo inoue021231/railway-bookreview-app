@@ -1,25 +1,30 @@
 import { useForm } from "react-hook-form";
-import { postIcon, postUser } from "../api";
-import { Link } from "react-router-dom";
+import { getUser, postIcon, postUser } from "../api";
+import { Link, useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { changeLoginStatus, setToken, setUser } from "../redux/listSlice";
+import { useDispatch } from "react-redux";
+import Header from "../components/Header";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  type DataObject = {
+  type SignupFormProps = {
     name: String;
     email: String;
     password: String;
   };
 
   const onSubmit = (event: any) => {
-    const data: DataObject = {
+    const data: SignupFormProps = {
       name: event.userName,
       email: event.email,
       password: event.password,
@@ -43,7 +48,7 @@ const SignUp = () => {
     });
   };
 
-  const fetchData = async (data: DataObject, file: File) => {
+  const fetchData = async (data: SignupFormProps, file: File) => {
     const newData = await postUser(data);
     console.log(newData);
     if (newData.hasOwnProperty("ErrorMessageJP")) {
@@ -58,11 +63,32 @@ const SignUp = () => {
       setErrorMessage(icon["ErrorMessageJP"]);
     } else {
       setErrorMessage("");
+      localStorage.setItem("authToken", newData.token);
+      dispatch(setUser({ name: data.name, icon: icon.iconUrl }));
+      dispatch(changeLoginStatus(true));
+      dispatch(setToken(newData.token));
+      navigate("/");
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    (async () => {
+      if (token) {
+        const res = await getUser(token);
+        if (res.hasOwnProperty("name")) {
+          dispatch(setUser(res));
+          dispatch(changeLoginStatus(true));
+          dispatch(setToken(token));
+          navigate("/");
+        }
+      }
+    })();
+  }, []);
+
   return (
     <>
+      <Header />
       <h2>新規ユーザー登録</h2>
       <div style={{ color: "red" }}>{errorMessage !== "" && errorMessage}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -147,7 +173,7 @@ const SignUp = () => {
         </div>
         <input type="submit" value="登録" />
       </form>
-      <Link to="/login">ログインページへ</Link>
+      {/* <Link to="/login">ログインページへ</Link> */}
     </>
   );
 };

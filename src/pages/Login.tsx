@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { signinUser } from "../api";
-import { useState } from "react";
+import { getUser, signinUser } from "../api";
+import { useEffect, useState } from "react";
+import { changeLoginStatus, setToken, setUser } from "../redux/listSlice";
+import { useDispatch } from "react-redux";
+import Header from "../components/Header";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -30,12 +35,38 @@ const Login = () => {
       setErrorMessage(newData["ErrorMessageJP"]);
     } else {
       setErrorMessage("");
+      console.log(newData);
+      const res = await getUser(newData.token);
+      if (res.hasOwnProperty("name")) {
+        localStorage.setItem("authToken", newData.token);
+        dispatch(setUser(res));
+        dispatch(changeLoginStatus(true));
+        dispatch(setToken(newData.token));
+        navigate("/");
+      }
     }
     console.log(newData);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+    (async () => {
+      if (token) {
+        const res = await getUser(token);
+        if (res.hasOwnProperty("name")) {
+          dispatch(setUser(res));
+          dispatch(changeLoginStatus(true));
+          dispatch(setToken(token));
+          navigate("/");
+        }
+      }
+    })();
+  }, []);
+
   return (
     <div>
+      <Header />
       <h2>ログイン</h2>
       <div style={{ color: "red" }}>{errorMessage !== "" && errorMessage}</div>
 
@@ -75,7 +106,7 @@ const Login = () => {
         </div>
         <input className="submit" type="submit" value="ログイン" />
       </form>
-      <Link to="/signup">新規ユーザー登録ページへ</Link>
+      {/* <Link to="/signup">新規ユーザー登録ページへ</Link> */}
     </div>
   );
 };

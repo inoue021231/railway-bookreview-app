@@ -56,3 +56,23 @@ export const postIcon = (token: string, file: File) => {
     body: formData,
   });
 };
+
+export const getPublicBookList = (index: number) => {
+  return request(`/public/books?offset=${index}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const putUsers = (token: string, user: object) => {
+  return request("/users", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(user),
+  });
+};
