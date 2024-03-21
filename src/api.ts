@@ -87,3 +87,24 @@ export const postBooks = (token: string, review: object) => {
     body: JSON.stringify(review),
   });
 };
+
+export const getBook = (token: string, id: string) => {
+  return request(`/books/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+};
+
+export const postLogs = (token: string, id: string) => {
+  return request("/logs", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify({ selectBookId: id }),
+  });
+};

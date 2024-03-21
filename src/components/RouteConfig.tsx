@@ -5,6 +5,7 @@ import SignUp from "../pages/SignUp";
 import BookList from "../pages/BookList";
 import Profile from "../pages/Profile";
 import NewReview from "../pages/NewReview";
+import DetailReview from "../pages/DetailReview";
 
 const RouteConfig = () => {
   return (
@@ -16,6 +17,7 @@ const RouteConfig = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new" element={<NewReview />} />
+          <Route path="/detail/:id" element={<DetailReview />} />
         </Routes>
       </BrowserRouter>
     </>

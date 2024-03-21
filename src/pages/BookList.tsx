@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getBookList, getPublicBookList, getUser } from "../api";
+import { getBookList, getPublicBookList, getUser, postLogs } from "../api";
 
 import "./booklist.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import {
 } from "../redux/listSlice";
 import Pagination from "../components/ListPagination";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BookList = () => {
   type List = {
@@ -26,9 +26,17 @@ const BookList = () => {
 
   const list: List[] = useSelector((state: RootState) => state.list.list);
   const page = useSelector((state: RootState) => state.list.page);
+  const token = useSelector((state: RootState) => state.list.token);
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
   // localStorage.clear();
+
+  const handleClickReview = async (id: string) => {
+    const res = await postLogs(token, id);
+    console.log(res);
+    navigate(`/detail/${id}`);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -63,14 +71,14 @@ const BookList = () => {
       {list.length !== 0 &&
         list.map((book) => {
           return (
-            <div className="review-container" key={book.id}>
+            <div
+              className="review-container"
+              onClick={() => handleClickReview(book.id)}
+              key={book.id}
+            >
               <div className="review-block">
                 <div className="review-block__title">{book.title}</div>
                 <div className="review-block__reviewer">{book.reviewer}</div>
-                {/* <div className="review-block__detail">{book.detail}</div>
-              <div className="review-block__url">{book.url}</div>
-              
-              <div className="review-block__reivew">{book.review}</div> */}
               </div>
             </div>
           );
