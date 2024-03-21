@@ -19,7 +19,7 @@ const ListPagination = () => {
   return (
     <div>
       <Pagination
-        count={calcPageCount()}
+        count={10}
         page={page}
         onChange={(_, value) => dispatch(changePage(value))}
       />

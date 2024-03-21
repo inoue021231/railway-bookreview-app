@@ -14,7 +14,7 @@ export const listSlice = createSlice({
   },
   reducers: {
     addList: (state, action) => {
-      state.list = state.list.concat(action.payload);
+      state.list = action.payload;
     },
     changePage: (state, action) => {
       state.page = action.payload;

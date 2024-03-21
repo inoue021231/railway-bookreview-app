@@ -106,7 +106,6 @@ const Login = () => {
         </div>
         <input className="submit" type="submit" value="ログイン" />
       </form>
-      {/* <Link to="/signup">新規ユーザー登録ページへ</Link> */}
     </div>
   );
 };

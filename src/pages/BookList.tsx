@@ -15,8 +15,6 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 const BookList = () => {
-  const REVIEW_COUNT = 100; // 10
-
   type List = {
     detail: string;
     id: string;
@@ -32,8 +30,6 @@ const BookList = () => {
 
   // localStorage.clear();
 
-  const extractedList = list.slice((page - 1) * 10, page * 10);
-
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     (async () => {
@@ -45,43 +41,27 @@ const BookList = () => {
           dispatch(setToken(token));
 
           // レビュー取得(トークンあり)
-          let index = 0;
-          while (index < REVIEW_COUNT) {
-            const data = await getBookList(token, index);
-            if (data.length === 0) {
-              break;
-            }
-            index += 10;
-            dispatch(addList(data));
-          }
+          const data = await getBookList(token, page * 10 - 10);
+          dispatch(addList(data));
         } else {
           // レビュー取得(トークン無効) ログイン画面にとばす
-          let index = 0;
-          while (index < REVIEW_COUNT) {
-            const data = await getPublicBookList(index);
-            if (data.length === 0) break;
-            dispatch(addList(data));
-            index += 10;
-          }
+          const data = await getPublicBookList(page * 10 - 10);
+          dispatch(addList(data));
         }
       } else {
         // レビュー取得(トークンなし)
-        let index = 0;
-        while (index < REVIEW_COUNT) {
-          const data = await getPublicBookList(index);
-          if (data.length === 0) break;
-          dispatch(addList(data));
-          index += 10;
-        }
+        const data = await getPublicBookList(page * 10 - 10);
+        dispatch(addList(data));
       }
     })();
-  }, []);
+  }, [page]);
+
   return (
     <div>
       <Header />
       <Link to="/new">レビュー登録</Link>
-      {extractedList.length !== 0 &&
-        extractedList.map((book) => {
+      {list.length !== 0 &&
+        list.map((book) => {
           return (
             <div className="review-container" key={book.id}>
               <div className="review-block">
