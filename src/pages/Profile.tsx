@@ -8,6 +8,7 @@ import { putUsers } from "../api";
 import { setUser } from "../redux/listSlice";
 
 const Profile = () => {
+  const [newuser, setNewuser] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
@@ -45,6 +46,7 @@ const Profile = () => {
     if (!loginStatus) {
       navigate("/");
     }
+    setNewuser(user.name);
   }, []);
 
   return (
@@ -62,7 +64,8 @@ const Profile = () => {
                 required: true,
                 minLength: 4,
               })}
-              value={user.name}
+              value={newuser}
+              onChange={(event) => setNewuser(event.target.value)}
               id="userName"
               className="formArea"
             />

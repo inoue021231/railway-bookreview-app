@@ -45,7 +45,6 @@ const Login = () => {
         navigate("/");
       }
     }
-    console.log(newData);
   };
 
   useEffect(() => {
