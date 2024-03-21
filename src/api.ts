@@ -76,3 +76,14 @@ export const putUsers = (token: string, user: object) => {
     body: JSON.stringify(user),
   });
 };
+
+export const postBooks = (token: string, review: object) => {
+  return request("/books", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(review),
+  });
+};

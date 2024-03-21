@@ -15,7 +15,7 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 const BookList = () => {
-  const REVIEW_COUNT = 100;
+  const REVIEW_COUNT = 100; // 10
 
   type List = {
     detail: string;
@@ -55,7 +55,7 @@ const BookList = () => {
             dispatch(addList(data));
           }
         } else {
-          // レビュー取得(トークン無効)
+          // レビュー取得(トークン無効) ログイン画面にとばす
           let index = 0;
           while (index < REVIEW_COUNT) {
             const data = await getPublicBookList(index);
