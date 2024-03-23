@@ -42,22 +42,6 @@ const NewReview = () => {
       setErrorMessage("");
       navigate("/");
     }
-    /* const newData = await signinUser(data);
-    if (newData.hasOwnProperty("ErrorMessageJP")) {
-      setErrorMessage(newData["ErrorMessageJP"]);
-    } else {
-      setErrorMessage("");
-      console.log(newData);
-      const res = await getUser(newData.token);
-      if (res.hasOwnProperty("name")) {
-        localStorage.setItem("authToken", newData.token);
-        dispatch(setUser(res));
-        dispatch(changeLoginStatus(true));
-        dispatch(setToken(newData.token));
-        navigate("/");
-      }
-    }
-    console.log(newData); */
   };
 
   return (

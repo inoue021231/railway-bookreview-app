@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import {
   addList,
+  changeIsLoading,
   changeLoginStatus,
   setToken,
   setUser,
@@ -13,6 +14,7 @@ import {
 import Pagination from "../components/ListPagination";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const BookList = () => {
   type List = {
@@ -27,6 +29,7 @@ const BookList = () => {
   const list: List[] = useSelector((state: RootState) => state.list.list);
   const page = useSelector((state: RootState) => state.list.page);
   const token = useSelector((state: RootState) => state.list.token);
+  const isLoading = useSelector((state: RootState) => state.list.isLoading);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -41,6 +44,7 @@ const BookList = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     (async () => {
+      dispatch(changeIsLoading(true));
       if (token) {
         const res = await getUser(token);
         if (res.hasOwnProperty("name")) {
@@ -51,15 +55,17 @@ const BookList = () => {
           // レビュー取得(トークンあり)
           const data = await getBookList(token, page * 10 - 10);
           dispatch(addList(data));
+          dispatch(changeIsLoading(false));
         } else {
           // レビュー取得(トークン無効) ログイン画面にとばす
-          const data = await getPublicBookList(page * 10 - 10);
-          dispatch(addList(data));
+          dispatch(changeIsLoading(false));
+          navigate("/login");
         }
       } else {
         // レビュー取得(トークンなし)
         const data = await getPublicBookList(page * 10 - 10);
         dispatch(addList(data));
+        dispatch(changeIsLoading(false));
       }
     })();
   }, [page]);
@@ -67,23 +73,31 @@ const BookList = () => {
   return (
     <div>
       <Header />
-      <Link to="/new">レビュー登録</Link>
-      {list.length !== 0 &&
-        list.map((book) => {
-          return (
-            <div
-              className="review-container"
-              onClick={() => handleClickReview(book.id)}
-              key={book.id}
-            >
-              <div className="review-block">
-                <div className="review-block__title">{book.title}</div>
-                <div className="review-block__reviewer">{book.reviewer}</div>
-              </div>
-            </div>
-          );
-        })}
-      <Pagination />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <Link to="/new">レビュー登録</Link>
+          {list.length !== 0 &&
+            list.map((book) => {
+              return (
+                <div
+                  className="review-container"
+                  onClick={() => handleClickReview(book.id)}
+                  key={book.id}
+                >
+                  <div className="review-block">
+                    <div className="review-block__title">{book.title}</div>
+                    <div className="review-block__reviewer">
+                      {book.reviewer}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          <Pagination />
+        </div>
+      )}
     </div>
   );
 };

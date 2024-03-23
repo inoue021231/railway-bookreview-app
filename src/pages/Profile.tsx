@@ -33,6 +33,8 @@ const Profile = () => {
 
   const fetchData = async (data: any) => {
     const newData = await putUsers(token, data);
+
+    console.log(newData);
     if (newData.hasOwnProperty("ErrorMessageJP")) {
       setErrorMessage(newData["ErrorMessageJP"]);
     } else {
@@ -62,7 +64,6 @@ const Profile = () => {
             <input
               {...register("userName", {
                 required: true,
-                minLength: 4,
               })}
               value={newuser}
               onChange={(event) => setNewuser(event.target.value)}

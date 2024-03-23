@@ -11,6 +11,7 @@ export const listSlice = createSlice({
     },
     loginStatus: false,
     token: "",
+    isLoading: false,
   },
   reducers: {
     addList: (state, action) => {
@@ -28,6 +29,9 @@ export const listSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    changeIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
     resetListSlice: (state) => {
       state.list = [];
       state.page = 1;
@@ -44,6 +48,7 @@ export const {
   setUser,
   changeLoginStatus,
   setToken,
+  changeIsLoading,
   resetListSlice,
 } = listSlice.actions;
 
