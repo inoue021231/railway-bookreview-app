@@ -1,12 +1,22 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { postBooks } from "../api";
+import { postBooks, putBook } from "../api";
 
 const EditReview = () => {
+  type ReviewProps = {
+    title?: string;
+    url?: string;
+    detail?: string;
+    review?: string;
+    reviewer?: string;
+    isMine?: boolean;
+  };
+
+  const [reviewData, setReviewData] = useState<ReviewProps>({});
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
@@ -17,13 +27,8 @@ const EditReview = () => {
   const token = useSelector((state: RootState) => state.list.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  type ReviewProps = {
-    title: string;
-    url: string;
-    detail: string;
-    review: string;
-  };
+  const location = useLocation();
+  const id: string = urlParams.id ?? "";
 
   const onSubmit = (event: any) => {
     const data: ReviewProps = {
@@ -36,7 +41,7 @@ const EditReview = () => {
   };
 
   const fetchData = async (data: ReviewProps) => {
-    const newData = await postBooks(token, data);
+    const newData = await putBook(token, id, data);
     if (newData.hasOwnProperty("ErrorMessageJP")) {
       setErrorMessage(newData["ErrorMessageJP"]);
     } else {
@@ -44,6 +49,10 @@ const EditReview = () => {
       navigate("/");
     }
   };
+
+  useEffect(() => {
+    setReviewData(location.state.reviewData);
+  }, []);
 
   return (
     <div>
@@ -59,6 +68,10 @@ const EditReview = () => {
               {...register("title", {
                 required: true,
               })}
+              value={reviewData.title}
+              onChange={(event) =>
+                setReviewData({ ...reviewData, title: event.target.value })
+              }
               id="title"
               className="formArea"
             />
@@ -73,6 +86,10 @@ const EditReview = () => {
               {...register("url", {
                 required: true,
               })}
+              value={reviewData.url}
+              onChange={(event) =>
+                setReviewData({ ...reviewData, url: event.target.value })
+              }
               id="url"
               className="formArea"
             />
@@ -85,6 +102,10 @@ const EditReview = () => {
               {...register("detail", {
                 required: true,
               })}
+              value={reviewData.detail}
+              onChange={(event) =>
+                setReviewData({ ...reviewData, detail: event.target.value })
+              }
               id="detail"
               className="formArea"
             />
@@ -99,6 +120,10 @@ const EditReview = () => {
               {...register("review", {
                 required: true,
               })}
+              value={reviewData.review}
+              onChange={(event) =>
+                setReviewData({ ...reviewData, review: event.target.value })
+              }
               id="review"
               className="formArea"
             />

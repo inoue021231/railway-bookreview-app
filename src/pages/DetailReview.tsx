@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { getBook } from "../api";
+import { deleteBook, getBook } from "../api";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import "./detailreview.scss";
@@ -59,6 +59,17 @@ const DetailReview = () => {
           <br />
           <div className="review__reivew">{reviewData.review}</div>
           <div className="review__reviewer">{reviewData.reviewer}</div>
+        </div>
+      )}
+      {reviewData.isMine && (
+        <div>
+          <Link to={`/edit/${id}`} state={{ reviewData: reviewData }}>
+            編集する
+          </Link>
+          <br></br>
+          <Link to="/" onClick={async () => await deleteBook(token, id)}>
+            削除する
+          </Link>
         </div>
       )}
     </div>

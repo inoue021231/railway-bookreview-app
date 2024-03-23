@@ -108,3 +108,24 @@ export const postLogs = (token: string, id: string) => {
     body: JSON.stringify({ selectBookId: id }),
   });
 };
+
+export const putBook = (token: string, id: string, review: object) => {
+  return request(`/books/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(review),
+  });
+};
+
+export const deleteBook = (token: string, id: string) => {
+  return request(`/books/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+};
