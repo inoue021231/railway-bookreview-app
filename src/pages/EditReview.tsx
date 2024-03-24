@@ -16,7 +16,7 @@ const EditReview = () => {
     isMine?: boolean;
   };
 
-  const [reviewData, setReviewData] = useState<ReviewProps>({});
+  /* const [reviewData, setReviewData] = useState<ReviewProps>({}); */
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
@@ -28,6 +28,9 @@ const EditReview = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [reviewData, setReviewData] = useState<ReviewProps>(
+    location.state.reviewData
+  );
   const id: string = urlParams.id ?? "";
 
   const onSubmit = (event: any) => {
@@ -50,9 +53,9 @@ const EditReview = () => {
     }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     setReviewData(location.state.reviewData);
-  }, []);
+  }, []); */
 
   return (
     <div>

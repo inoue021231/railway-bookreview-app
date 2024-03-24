@@ -1,7 +1,16 @@
 const request = async (path: string, options: RequestInit = {}) => {
   const url = `https://railway.bookreview.techtrain.dev${path}`;
   const response = await fetch(url, options);
-  return response.json();
+  return response.json().catch(() => null);
+};
+
+const createHeaders = (token: string = "") => {
+  return token !== ""
+    ? { "Content-Type": "application/json" }
+    : {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      };
 };
 
 export const postUser = (user: object) => {

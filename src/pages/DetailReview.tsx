@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { deleteBook, getBook } from "../api";
@@ -21,6 +21,7 @@ const DetailReview = () => {
   const [isError, setIsError] = useState(false);
   const [reviewData, setReviewData] = useState<ReviewProps>({});
   const urlParams = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const token: string = useSelector((state: RootState) => state.list.token);
@@ -28,6 +29,17 @@ const DetailReview = () => {
     (state: RootState) => state.list.isLoading
   );
   const id: string = urlParams.id ?? "";
+
+  const handleDeleteReview = async () => {
+    const confirmDelete = window.confirm("本当に削除しますか？");
+
+    if (confirmDelete) {
+      dispatch(changeIsLoading(true));
+      const res = await deleteBook(token, id);
+      dispatch(changeIsLoading(false));
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -59,17 +71,14 @@ const DetailReview = () => {
           <br />
           <div className="review__reivew">{reviewData.review}</div>
           <div className="review__reviewer">{reviewData.reviewer}</div>
-        </div>
-      )}
-      {reviewData.isMine && (
-        <div>
-          <Link to={`/edit/${id}`} state={{ reviewData: reviewData }}>
-            編集する
-          </Link>
-          <br></br>
-          <Link to="/" onClick={async () => await deleteBook(token, id)}>
-            削除する
-          </Link>
+          {reviewData.isMine && (
+            <div>
+              <Link to={`/edit/${id}`} state={{ reviewData: reviewData }}>
+                編集する
+              </Link>
+              <button onClick={() => handleDeleteReview()}>削除する</button>
+            </div>
+          )}
         </div>
       )}
     </div>
