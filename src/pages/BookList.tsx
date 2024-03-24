@@ -37,7 +37,6 @@ const BookList = () => {
 
   const handleClickReview = async (id: string) => {
     const res = await postLogs(token, id);
-    console.log(res);
     navigate(`/detail/${id}`);
   };
 

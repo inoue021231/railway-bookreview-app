@@ -35,7 +35,6 @@ const Login = () => {
       setErrorMessage(newData["ErrorMessageJP"]);
     } else {
       setErrorMessage("");
-      console.log(newData);
       const res = await getUser(newData.token);
       if (res.hasOwnProperty("name")) {
         localStorage.setItem("authToken", newData.token);
@@ -49,7 +48,6 @@ const Login = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    console.log(token);
     (async () => {
       if (token) {
         const res = await getUser(token);

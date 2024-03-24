@@ -41,6 +41,10 @@ const DetailReview = () => {
     }
   };
 
+  const handleNavigate = () => {
+    navigate(`/edit/${id}`, { state: { reviewData: reviewData } });
+  };
+
   useEffect(() => {
     (async () => {
       dispatch(changeIsLoading(true));
@@ -73,9 +77,10 @@ const DetailReview = () => {
           <div className="review__reviewer">{reviewData.reviewer}</div>
           {reviewData.isMine && (
             <div>
-              <Link to={`/edit/${id}`} state={{ reviewData: reviewData }}>
+              {/* <Link to={`/edit/${id}`} state={{ reviewData: reviewData }}>
                 編集する
-              </Link>
+              </Link> */}
+              <button onClick={() => handleNavigate()}>編集する</button>
               <button onClick={() => handleDeleteReview()}>削除する</button>
             </div>
           )}
